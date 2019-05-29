@@ -27,6 +27,8 @@ eureka:
     serviceUrl:
       defaultZone: http://eureka.springcloud.cn/eureka/
 
+logging:
+  path: ./log      
   
 
 
