@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -48,11 +49,20 @@ public class DemoApplication {
 		private UserRepository userRepository;
 
 		@RequestMapping("/greeting")
-		public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-			Optional<DemoUser> o = userRepository.findById(100L);
-			
-			return new Greeting(counter.incrementAndGet(), o.get().getName());
+		public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {					
+			return new Greeting(counter.incrementAndGet(), name);
 		}
+
+		@RequestMapping("/add")
+		public Greeting add(@RequestParam(value = "name", defaultValue = "World") String name) {
+			DemoUser o=new DemoUser();
+			// o.setId(300);
+			o.setName(name);
+			o.setAge(20);
+			userRepository.save(o);
+			return new Greeting(counter.incrementAndGet(), o.getName());
+		}
+
 	}
 
 }

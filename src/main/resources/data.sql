@@ -1,1 +1,1 @@
-insert into demo_user values (100,'zbq','zbq',12,12);
+insert into demo_user values (100,'zbq',12);

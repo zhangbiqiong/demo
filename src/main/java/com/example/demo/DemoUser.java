@@ -1,7 +1,5 @@
 package com.example.demo;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,36 +10,22 @@ import javax.persistence.Table;
 @Entity
 @Table(name="demo_user")
 class DemoUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column
-    private String username;
+    @Id    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column
     private String name;
 
     @Column
-    private Short age;
+    private int age;
 
-    @Column
-    private BigDecimal balance;
-
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getName() {
@@ -52,20 +36,15 @@ class DemoUser {
         this.name = name;
     }
 
-    public Short getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(Short age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
-    public BigDecimal getBalance() {
-        return balance;
-    }
 
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
+
 
 }
