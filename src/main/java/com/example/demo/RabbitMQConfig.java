@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
  
 @Configuration
 public class RabbitMQConfig {
-    static final String QUEUE = "direct_queue";
+    static final String QUEUE = "test_queue";
     /**
      * Direct模式
      * @return
