@@ -3,11 +3,14 @@ package com.example.demo;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,21 +45,19 @@ public class DemoApplication {
 	@RestController
 	class GreetingController {
 
-		// private static final String template = "Hello, %s!";
 		private final AtomicLong counter = new AtomicLong();
 
 		@Autowired
 		private UserRepository userRepository;
 
 		@RequestMapping("/greeting")
-		public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {					
+		public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
 			return new Greeting(counter.incrementAndGet(), name);
 		}
 
 		@RequestMapping("/add")
 		public Greeting add(@RequestParam(value = "name", defaultValue = "World") String name) {
-			DemoUser o=new DemoUser();
-			// o.setId(300);
+			DemoUser o = new DemoUser();
 			o.setName(name);
 			o.setAge(20);
 			userRepository.save(o);
@@ -68,7 +69,7 @@ public class DemoApplication {
 
 		@RequestMapping("/addRedis")
 		public Greeting addRedis(@RequestParam(value = "name", defaultValue = "World") String name) {
-			redisTemplate.opsForValue().set("name",name);
+			redisTemplate.opsForValue().set("name", name);
 			return new Greeting(counter.incrementAndGet(), name);
 		}
 
@@ -77,8 +78,19 @@ public class DemoApplication {
 
 		@RequestMapping("/addRabbit")
 		public Greeting addRabbit(@RequestParam(value = "name", defaultValue = "World") String name) {
-			rabbitTemplate.convertAndSend("hello", name);
+			rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE, name);
 			return new Greeting(counter.incrementAndGet(), name);
+		}
+
+		@Component
+		@RabbitListener(queues = RabbitMQConfig.QUEUE)
+		class HelloReceiver {
+
+			@RabbitHandler
+			public void process(String hello) {
+				System.out.println("Receiver  000000000000: " + hello);
+			}
+
 		}
 
 	}

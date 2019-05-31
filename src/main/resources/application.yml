@@ -4,6 +4,9 @@ server:
 spring:
   rabbitmq:
     host: 144.34.128.137  
+    port: 5672
+    username: guest
+    password: guest
   redis:
     host: 144.34.128.137  
   application:
