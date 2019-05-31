@@ -2,6 +2,8 @@ server:
   port: 7900
 
 spring:
+  rabbitmq:
+    host: 144.34.128.137  
   redis:
     host: 144.34.128.137  
   application:
